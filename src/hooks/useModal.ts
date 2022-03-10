@@ -5,5 +5,12 @@ export const useModal = () => {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
-  return {isInfoModalOpen, isStatsModalOpen, isSettingsModalOpen, setIsInfoModalOpen, setIsSettingsModalOpen, setIsStatsModalOpen};
-}
+  return {
+    isInfoModalOpen,
+    isStatsModalOpen,
+    isSettingsModalOpen,
+    setIsInfoModalOpen,
+    setIsSettingsModalOpen,
+    setIsStatsModalOpen,
+  };
+};

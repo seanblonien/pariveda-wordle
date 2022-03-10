@@ -11,31 +11,30 @@ export const useGameState = (setIsStatsModalOpen: (va: boolean) => void) => {
 
   useEffect(() => {
     if (isGameWon) {
-      const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      const delayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH
+      const winMessage = WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
+      const delayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH;
 
       showSuccess(winMessage, {
         delayMs,
         onClose: () => setIsStatsModalOpen(true),
-      })
+      });
     }
 
     if (isGameLost) {
       setTimeout(() => {
-        setIsStatsModalOpen(true)
-      }, GAME_LOST_INFO_DELAY)
+        setIsStatsModalOpen(true);
+      }, GAME_LOST_INFO_DELAY);
     }
   }, [isGameWon, isGameLost, showSuccess, setIsStatsModalOpen]);
 
   const toggleRevealing = useCallback(() => {
-    setIsRevealing(true)
+    setIsRevealing(true);
     // turn this back off after all
     // chars have been revealed
     setTimeout(() => {
-      setIsRevealing(false)
+      setIsRevealing(false);
     }, REVEAL_TIME_MS * MAX_WORD_LENGTH);
   }, [setIsRevealing]);
 
   return {isGameWon, isGameLost, isRevealing, setIsGameLost, setIsGameWon, toggleRevealing};
-}
+};
