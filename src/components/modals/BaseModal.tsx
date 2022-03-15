@@ -1,18 +1,17 @@
 import {Fragment} from 'react';
 import {Dialog, Transition} from '@headlessui/react';
 import {XCircleIcon} from '@heroicons/react/outline';
+import {ModalInstanceProps} from '../../types';
 
-type Props = {
+export type BaseModalProps = ModalInstanceProps & {
   title: string;
   children: React.ReactNode;
-  isOpen: boolean;
-  handleClose: () => void;
 };
 
-export const BaseModal = ({title, children, isOpen, handleClose}: Props) => {
+export const BaseModal: React.FC<BaseModalProps> = ({title, children, isOpen, close}) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as='div' className='fixed z-10 inset-0 overflow-y-auto' onClose={handleClose}>
+      <Dialog as='div' className='fixed z-10 inset-0 overflow-y-auto' onClose={close}>
         <div className='flex items-center justify-center min-h-screen py-10 px-4 text-center sm:block sm:p-0'>
           <Transition.Child
             as={Fragment}
@@ -41,7 +40,7 @@ export const BaseModal = ({title, children, isOpen, handleClose}: Props) => {
           >
             <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6 dark:bg-gray-800'>
               <div className='absolute right-4 top-4'>
-                <XCircleIcon className='h-6 w-6 cursor-pointer dark:stroke-white' onClick={() => handleClose()} />
+                <XCircleIcon className='h-6 w-6 cursor-pointer dark:stroke-white' onClick={close} />
               </div>
               <div>
                 <div className='text-center'>

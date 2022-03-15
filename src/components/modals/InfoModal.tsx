@@ -1,14 +1,10 @@
+import {ModalInstanceProps} from '../../types';
 import {Cell} from '../grid/Cell';
 import {BaseModal} from './BaseModal';
 
-type Props = {
-  isOpen: boolean;
-  handleClose: () => void;
-};
-
-export const InfoModal = ({isOpen, handleClose}: Props) => {
+export const InfoModal: React.FC<ModalInstanceProps> = (props) => {
   return (
-    <BaseModal title='How to play' isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal title='How to play' {...props}>
       <p className='text-sm text-gray-500 dark:text-gray-300'>
         Guess the word in 6 tries. After each guess, the color of the tiles will change to show how close your guess was
         to the word.

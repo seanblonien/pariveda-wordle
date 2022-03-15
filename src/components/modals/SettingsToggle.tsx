@@ -1,13 +1,13 @@
 import classnames from 'classnames';
 
-type Props = {
+export type SettingsToggleProps = {
   settingName: string;
   flag: boolean;
-  handleFlag: Function;
+  handleFlag: (value: boolean) => void;
   description?: string;
 };
 
-export const SettingsToggle = ({settingName, flag, handleFlag, description}: Props) => {
+export const SettingsToggle: React.FC<SettingsToggleProps> = ({settingName, flag, handleFlag, description}) => {
   const toggleHolder = classnames(
     'w-14 h-8 flex shrink-0 items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out cursor-pointer',
     {

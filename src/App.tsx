@@ -22,9 +22,10 @@ import {useGameState} from './hooks/useGameState';
 import {useModal} from './hooks/useModal';
 import {useDifficulty} from './hooks/useDifficulty';
 import {useStats} from './hooks/useStats';
+import {ModalContainer} from './components/modals/ModalContainer';
 
 export function App() {
-  const {showError: showErrorAlert, showSuccess: showSuccessAlert} = useAlert();
+  const {showError, showSuccess} = useAlert();
   const {isDarkMode, isHighContrastMode, handleDarkMode, handleHighContrastMode} = useDarkmode();
   const {
     isInfoModalOpen,
@@ -81,7 +82,7 @@ export function App() {
       if (hasGuessedMaxChallenges) {
         statsCompleteGame(guesses.length + 1);
         setIsGameLost(true);
-        showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
+        showError(CORRECT_WORD_MESSAGE(solution), {
           persist: true,
           delayMs: REVEAL_TIME_MS * MAX_WORD_LENGTH + 1,
         });
@@ -106,29 +107,7 @@ export function App() {
           />
         </div>
         <Keyboard onChar={onChar} onDelete={onDelete} onEnter={onEnter} guesses={guesses} isRevealing={isRevealing} />
-        <InfoModal isOpen={isInfoModalOpen} handleClose={() => setIsInfoModalOpen(false)} />
-        <StatsModal
-          isOpen={isStatsModalOpen}
-          handleClose={() => setIsStatsModalOpen(false)}
-          guesses={guesses}
-          gameStats={stats}
-          isGameLost={isGameLost}
-          isGameWon={isGameWon}
-          handleShare={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-          isHardMode={isHardMode}
-          isDarkMode={isDarkMode}
-          isHighContrastMode={isHighContrastMode}
-        />
-        <SettingsModal
-          isOpen={isSettingsModalOpen}
-          handleClose={() => setIsSettingsModalOpen(false)}
-          isHardMode={isHardMode}
-          handleHardMode={handleHardMode}
-          isDarkMode={isDarkMode}
-          handleDarkMode={handleDarkMode}
-          isHighContrastMode={isHighContrastMode}
-          handleHighContrastMode={handleHighContrastMode}
-        />
+        <ModalContainer />
         <AlertContainer />
       </div>
     </div>

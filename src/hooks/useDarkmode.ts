@@ -1,15 +1,12 @@
-import {useCallback, useEffect, useState} from 'react';
-import {getStoredIsHighContrastMode, setStoredIsHighContrastMode} from '../lib/localStorage';
+import {useEffect} from 'react';
+import {useGlobalContext, useSetDarkMode, useSetHighContrastMode} from '../context/GlobalContext';
 
 export const useDarkmode = () => {
-  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : prefersDarkMode ? true : false,
-  );
-
-  const [isHighContrastMode, setIsHighContrastMode] = useState(getStoredIsHighContrastMode());
-
+  const {
+    theming: {isDarkMode, isHighContrastMode},
+  } = useGlobalContext();
+  const setHighContrastMode = useSetHighContrastMode();
+  const setIsDarkMode = useSetDarkMode();
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -24,21 +21,8 @@ export const useDarkmode = () => {
     }
   }, [isDarkMode, isHighContrastMode]);
 
-  const handleDarkMode = useCallback(
-    (isDark: boolean) => {
-      setIsDarkMode(isDark);
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    },
-    [setIsDarkMode],
-  );
-
-  const handleHighContrastMode = useCallback(
-    (isHighContrast: boolean) => {
-      setIsHighContrastMode(isHighContrast);
-      setStoredIsHighContrastMode(isHighContrast);
-    },
-    [setIsHighContrastMode],
-  );
+  const handleDarkMode = setIsDarkMode;
+  const handleHighContrastMode = setHighContrastMode;
 
   return {isDarkMode, isHighContrastMode, handleDarkMode, handleHighContrastMode};
 };

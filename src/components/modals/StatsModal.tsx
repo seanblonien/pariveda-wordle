@@ -6,41 +6,18 @@ import {shareStatus} from '../../lib/share';
 import {tomorrow} from '../../lib/words';
 import {BaseModal} from './BaseModal';
 import {STATISTICS_TITLE, GUESS_DISTRIBUTION_TEXT, NEW_WORD_TEXT, SHARE_TEXT} from '../../constants/strings';
+import {ModalInstanceProps} from '../../types';
 
-type Props = {
-  isOpen: boolean;
-  handleClose: () => void;
-  guesses: string[];
-  gameStats: GameStats;
-  isGameLost: boolean;
-  isGameWon: boolean;
-  handleShare: () => void;
-  isHardMode: boolean;
-  isDarkMode: boolean;
-  isHighContrastMode: boolean;
-};
-
-export const StatsModal = ({
-  isOpen,
-  handleClose,
-  guesses,
-  gameStats,
-  isGameLost,
-  isGameWon,
-  handleShare,
-  isHardMode,
-  isDarkMode,
-  isHighContrastMode,
-}: Props) => {
+export const StatsModal: React.FC<ModalInstanceProps> = (props) => {
   if (gameStats.totalGames <= 0) {
     return (
-      <BaseModal title={STATISTICS_TITLE} isOpen={isOpen} handleClose={handleClose}>
+      <BaseModal title={STATISTICS_TITLE} {...props}>
         <StatBar gameStats={gameStats} />
       </BaseModal>
     );
   }
   return (
-    <BaseModal title={STATISTICS_TITLE} isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal title={STATISTICS_TITLE} {...props}>
       <StatBar gameStats={gameStats} />
       <h4 className='text-lg leading-6 font-medium text-gray-900 dark:text-gray-100'>{GUESS_DISTRIBUTION_TEXT}</h4>
       <Histogram gameStats={gameStats} />

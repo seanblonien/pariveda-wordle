@@ -1,30 +1,19 @@
 import {BaseModal} from './BaseModal';
 import {SettingsToggle} from './SettingsToggle';
 import {HARD_MODE_DESCRIPTION, HIGH_CONTRAST_MODE_DESCRIPTION} from '../../constants/strings';
+import {useGlobalContext, useSetDarkMode, useSetHardMode, useSetHighContrastMode} from '../../context/GlobalContext';
+import {ModalInstanceProps} from '../../types';
 
-type Props = {
-  isOpen: boolean;
-  handleClose: () => void;
-  isHardMode: boolean;
-  handleHardMode: Function;
-  isDarkMode: boolean;
-  handleDarkMode: Function;
-  isHighContrastMode: boolean;
-  handleHighContrastMode: Function;
-};
-
-export const SettingsModal = ({
-  isOpen,
-  handleClose,
-  isHardMode,
-  handleHardMode,
-  isDarkMode,
-  handleDarkMode,
-  isHighContrastMode,
-  handleHighContrastMode,
-}: Props) => {
+export const SettingsModal: React.FC<ModalInstanceProps> = (props) => {
+  const {
+    settings: {isHardMode},
+    theming: {isDarkMode, isHighContrastMode},
+  } = useGlobalContext();
+  const handleHardMode = useSetHardMode();
+  const handleDarkMode = useSetDarkMode();
+  const handleHighContrastMode = useSetHighContrastMode();
   return (
-    <BaseModal title='Settings' isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal title='Settings' {...props}>
       <div className='flex flex-col mt-2 divide-y'>
         <SettingsToggle
           settingName='Hard Mode'
