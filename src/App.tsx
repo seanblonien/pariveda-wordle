@@ -4,7 +4,11 @@ import {Keyboard} from './components/keyboard/Keyboard';
 import {ModalContainer} from './components/modals/ModalContainer';
 import {Navbar} from './components/navbar/Navbar';
 import {MAX_WORD_LENGTH, MAX_CHALLENGES, REVEAL_TIME_MS} from './constants/settings';
-import {NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE} from './constants/strings';
+import {
+  NOT_ENOUGH_LETTERS_MESSAGE,
+  WORD_NOT_FOUND_MESSAGE,
+  CORRECT_WORD_MESSAGE,
+} from './constants/strings';
 import {useAddStatsCompleteGame, useShowError} from './context/GlobalContext';
 import {useDarkmodeEffect} from './hooks/useDarkmodeEffect';
 import {useDifficulty} from './hooks/useDifficulty';
@@ -16,8 +20,13 @@ import './App.css';
 export const App: React.FC = () => {
   useDarkmodeEffect();
   const showError = useShowError();
-  const {isGameWon, setIsGameWon, isGameLost, setIsGameLost, isRevealing, toggleRevealing} = useGameState();
-  const {guesses, addGuess, currentGuess, onChar, onDelete} = useGuesses(isGameWon, setIsGameWon, setIsGameLost);
+  const {isGameWon, setIsGameWon, isGameLost, setIsGameLost, isRevealing, toggleRevealing} =
+    useGameState();
+  const {guesses, addGuess, currentGuess, onChar, onDelete} = useGuesses(
+    isGameWon,
+    setIsGameWon,
+    setIsGameLost,
+  );
   const statsCompleteGame = useAddStatsCompleteGame();
   const {isHardMode, currentRowClass, doJiggle} = useDifficulty();
 
@@ -83,7 +92,13 @@ export const App: React.FC = () => {
             currentRowClassName={currentRowClass}
           />
         </div>
-        <Keyboard onChar={onChar} onDelete={onDelete} onEnter={onEnter} guesses={guesses} isRevealing={isRevealing} />
+        <Keyboard
+          onChar={onChar}
+          onDelete={onDelete}
+          onEnter={onEnter}
+          guesses={guesses}
+          isRevealing={isRevealing}
+        />
         <ModalContainer />
         <AlertContainer />
       </div>

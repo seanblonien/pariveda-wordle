@@ -190,5 +190,11 @@ module.exports = {
       files: ['*.js'],
       rules: {'@typescript-eslint/no-var-requires': 'off', 'no-param-reassign': 'off'},
     },
+    {
+      files: ['*.test.tsx', 'setupTests.ts'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
   ],
 };
