@@ -75,11 +75,11 @@ export const getWordOfDay = () => {
   const now = Date.now();
   const msInDay = 86400000;
   const index = Math.floor((now - epochMs) / msInDay);
-  const nextday = (index + 1) * msInDay + epochMs;
 
   const solution = localeAwareUpperCase(WORDS[index % WORDS.length]);
-  console.log(`Solution: ${solution}`);
+  console.log(`Solution #${index}: ${solution}`);
 
+  const nextday = (index + 1) * msInDay + epochMs;
   return {
     solution,
     solutionIndex: index,

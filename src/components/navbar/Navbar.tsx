@@ -11,7 +11,12 @@ export const Navbar: React.FC = () => {
           onClick={toggleModals.toggleInfoModal}
         />
         <p className='text-xl ml-2.5 font-bold dark:text-white inline-flex h-full items-center'>
-          <img src='/parivedaLogo.png' alt='Pariveda Logo' className='h-[75%] mr-2' />
+          <img
+            src='/parivedaLogo.png'
+            alt='Pariveda Logo'
+            className='h-[75%] mr-2 hidden md:block'
+          />
+          <span className='mr-2 md:hidden'>Pariveda</span>
           Wordle
         </p>
         <div className='right-icons'>
