@@ -7,7 +7,12 @@ export type SettingsToggleProps = {
   description?: string;
 };
 
-export const SettingsToggle: React.FC<SettingsToggleProps> = ({settingName, flag, handleFlag, description}) => {
+export const SettingsToggle: React.FC<SettingsToggleProps> = ({
+  settingName,
+  flag,
+  handleFlag,
+  description,
+}) => {
   const toggleHolder = classnames(
     'w-14 h-8 flex shrink-0 items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out cursor-pointer',
     {
@@ -22,16 +27,16 @@ export const SettingsToggle: React.FC<SettingsToggleProps> = ({settingName, flag
   );
 
   return (
-    <>
-      <div className='flex justify-between gap-4 py-3'>
-        <div className='text-gray-500 dark:text-gray-300 mt-2 text-left'>
-          <p className='leading-none'>{settingName}</p>
-          {description && <p className='text-xs mt-1 text-gray-500 dark:text-gray-300'>{description}</p>}
-        </div>
-        <div className={toggleHolder} onClick={() => handleFlag(!flag)}>
-          <div className={toggleButton} />
-        </div>
+    <div className='flex justify-between gap-4 py-3'>
+      <div className='text-gray-500 dark:text-gray-300 mt-2 text-left'>
+        <p className='leading-none'>{settingName}</p>
+        {description && (
+          <p className='text-xs mt-1 text-gray-500 dark:text-gray-300'>{description}</p>
+        )}
       </div>
-    </>
+      <div className={toggleHolder} onClick={() => handleFlag(!flag)}>
+        <div className={toggleButton} />
+      </div>
+    </div>
   );
 };

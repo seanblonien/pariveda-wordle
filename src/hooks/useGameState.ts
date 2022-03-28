@@ -1,13 +1,24 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect} from 'react';
 import {GAME_LOST_INFO_DELAY, MAX_WORD_LENGTH, REVEAL_TIME_MS} from '../constants/settings';
 import {WIN_MESSAGES} from '../constants/strings';
 import {useAlert} from '../context/AlertContext';
+import {
+  useGlobalContext,
+  useSetIsGameWon,
+  useSetIsGameLost,
+  useSetIsRevealing,
+  useSetModals,
+} from '../context/GlobalContext';
 
-export const useGameState = (setIsStatsModalOpen: (va: boolean) => void) => {
+export const useGameState = () => {
   const {showSuccess} = useAlert();
-  const [isGameWon, setIsGameWon] = useState(false);
-  const [isGameLost, setIsGameLost] = useState(false);
-  const [isRevealing, setIsRevealing] = useState(false);
+  const {
+    game: {isGameLost, isGameWon, isRevealing},
+  } = useGlobalContext();
+  const setIsGameWon = useSetIsGameWon();
+  const setIsGameLost = useSetIsGameLost();
+  const setIsRevealing = useSetIsRevealing();
+  const {toggleStatsModal} = useSetModals();
 
   useEffect(() => {
     if (isGameWon) {
@@ -16,16 +27,14 @@ export const useGameState = (setIsStatsModalOpen: (va: boolean) => void) => {
 
       showSuccess(winMessage, {
         delayMs,
-        onClose: () => setIsStatsModalOpen(true),
+        onClose: toggleStatsModal,
       });
     }
 
     if (isGameLost) {
-      setTimeout(() => {
-        setIsStatsModalOpen(true);
-      }, GAME_LOST_INFO_DELAY);
+      setTimeout(toggleStatsModal, GAME_LOST_INFO_DELAY);
     }
-  }, [isGameWon, isGameLost, showSuccess, setIsStatsModalOpen]);
+  }, [isGameWon, isGameLost, showSuccess]);
 
   const toggleRevealing = useCallback(() => {
     setIsRevealing(true);

@@ -1,10 +1,15 @@
+import {HARD_MODE_DESCRIPTION, HIGH_CONTRAST_MODE_DESCRIPTION} from '../../constants/strings';
+import {
+  useGlobalContext,
+  useSetDarkMode,
+  useSetHardMode,
+  useSetHighContrastMode,
+} from '../../context/GlobalContext';
+import {ModalInstanceProps} from '../../types';
 import {BaseModal} from './BaseModal';
 import {SettingsToggle} from './SettingsToggle';
-import {HARD_MODE_DESCRIPTION, HIGH_CONTRAST_MODE_DESCRIPTION} from '../../constants/strings';
-import {useGlobalContext, useSetDarkMode, useSetHardMode, useSetHighContrastMode} from '../../context/GlobalContext';
-import {ModalInstanceProps} from '../../types';
 
-export const SettingsModal: React.FC<ModalInstanceProps> = (props) => {
+export const SettingsModal: React.FC<ModalInstanceProps> = props => {
   const {
     settings: {isHardMode},
     theming: {isDarkMode, isHighContrastMode},

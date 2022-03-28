@@ -5,8 +5,8 @@ type Props = {
   gameStats: GameStats;
 };
 
-export const Histogram = ({gameStats}: Props) => {
-  const winDistribution = gameStats.winDistribution;
+export function Histogram({gameStats}: Props) {
+  const {winDistribution} = gameStats;
   const maxValue = Math.max(...winDistribution);
 
   return (
@@ -16,4 +16,4 @@ export const Histogram = ({gameStats}: Props) => {
       ))}
     </div>
   );
-};
+}

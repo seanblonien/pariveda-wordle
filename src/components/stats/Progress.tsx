@@ -4,7 +4,7 @@ type Props = {
   label: string;
 };
 
-export const Progress = ({index, size, label}: Props) => {
+export function Progress({index, size, label}: Props) {
   return (
     <div className='flex justify-left m-1'>
       <div className='items-center justify-center w-2'>{index + 1}</div>
@@ -18,4 +18,4 @@ export const Progress = ({index, size, label}: Props) => {
       </div>
     </div>
   );
-};
+}

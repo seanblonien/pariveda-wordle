@@ -1,10 +1,5 @@
-import {useState} from 'react';
-import {HARD_MODE_ALERT_MESSAGE} from '../constants/strings';
-import {useAlert} from '../context/AlertContext';
 import {
-  useClearCurrentRowClass,
   useGlobalContext,
-  useSetCurrentRowClass,
   useSetHardMode,
   useToggleCurrentRowClassJiggle,
 } from '../context/GlobalContext';

@@ -1,5 +1,6 @@
 import {MAX_CHALLENGES} from '../constants/settings';
-import {GameStats, loadStatsFromLocalStorage, saveStatsToLocalStorage} from './localStorage';
+import {GameStats} from '../types';
+import {loadStatsFromLocalStorage, saveStatsToLocalStorage} from './localStorage';
 
 // In stats array elements 0-5 are successes in 1-6 trys
 

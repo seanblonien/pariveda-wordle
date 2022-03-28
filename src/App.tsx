@@ -1,45 +1,26 @@
 import {Grid} from './components/grid/Grid';
 import {Keyboard} from './components/keyboard/Keyboard';
-import {InfoModal} from './components/modals/InfoModal';
-import {StatsModal} from './components/modals/StatsModal';
-import {SettingsModal} from './components/modals/SettingsModal';
-import {
-  GAME_COPIED_MESSAGE,
-  NOT_ENOUGH_LETTERS_MESSAGE,
-  WORD_NOT_FOUND_MESSAGE,
-  CORRECT_WORD_MESSAGE,
-} from './constants/strings';
+import {ModalContainer} from './components/modals/ModalContainer';
+import {Navbar} from './components/navbar/Navbar';
 import {MAX_WORD_LENGTH, MAX_CHALLENGES, REVEAL_TIME_MS} from './constants/settings';
+import {NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE} from './constants/strings';
+import {useAlert} from './context/AlertContext';
+import {useDifficulty} from './hooks/useDifficulty';
+import {useGameState} from './hooks/useGameState';
+import {useGuesses} from './hooks/useGuesses';
 import {isWordInWordList, solution, findFirstUnusedReveal, unicodeLength} from './lib/words';
-
 import './App.css';
 import {AlertContainer} from './components/alerts/AlertContainer';
-import {useAlert} from './context/AlertContext';
-import {Navbar} from './components/navbar/Navbar';
-import {useDarkmode} from './hooks/useDarkmode';
-import {useGuesses} from './hooks/useGuesses';
-import {useGameState} from './hooks/useGameState';
 import {useModal} from './hooks/useModal';
-import {useDifficulty} from './hooks/useDifficulty';
 import {useStats} from './hooks/useStats';
-import {ModalContainer} from './components/modals/ModalContainer';
 
-export function App() {
-  const {showError, showSuccess} = useAlert();
-  const {isDarkMode, isHighContrastMode, handleDarkMode, handleHighContrastMode} = useDarkmode();
-  const {
-    isInfoModalOpen,
-    isStatsModalOpen,
-    isSettingsModalOpen,
-    setIsInfoModalOpen,
-    setIsSettingsModalOpen,
-    setIsStatsModalOpen,
-  } = useModal();
-  const {isGameWon, setIsGameWon, isGameLost, setIsGameLost, isRevealing, toggleRevealing} =
-    useGameState(setIsStatsModalOpen);
+export const App: React.FC = () => {
+  const {showError} = useAlert();
+  const {setIsInfoModalOpen, setIsSettingsModalOpen, setIsStatsModalOpen} = useModal();
+  const {isGameWon, setIsGameWon, isGameLost, setIsGameLost, isRevealing, toggleRevealing} = useGameState();
   const {guesses, addGuess, currentGuess, onChar, onDelete} = useGuesses(isGameWon, setIsGameWon, setIsGameLost);
-  const {stats, statsCompleteGame} = useStats();
-  const {isHardMode, currentRowClass, handleHardMode, doJiggle} = useDifficulty(guesses.length === 0);
+  const {statsCompleteGame} = useStats();
+  const {isHardMode, currentRowClass, doJiggle} = useDifficulty(guesses.length === 0);
 
   const isGuessValidLength = unicodeLength(currentGuess) === MAX_WORD_LENGTH;
 
@@ -92,11 +73,7 @@ export function App() {
 
   return (
     <div className='h-screen flex flex-col'>
-      <Navbar
-        setIsInfoModalOpen={setIsInfoModalOpen}
-        setIsStatsModalOpen={setIsStatsModalOpen}
-        setIsSettingsModalOpen={setIsSettingsModalOpen}
-      />
+      <Navbar />
       <div className='pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow'>
         <div className='pb-6 grow'>
           <Grid
@@ -112,4 +89,4 @@ export function App() {
       </div>
     </div>
   );
-}
+};

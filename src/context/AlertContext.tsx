@@ -33,7 +33,7 @@ type Props = {
   children?: ReactNode;
 };
 
-export const AlertProvider = ({children}: Props) => {
+export function AlertProvider({children}: Props) {
   const [status, setStatus] = useState<AlertStatus>('success');
   const [message, setMessage] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -87,4 +87,4 @@ export const AlertProvider = ({children}: Props) => {
       {children}
     </AlertContext.Provider>
   );
-};
+}

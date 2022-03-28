@@ -1,3 +1,5 @@
+import {GameStats} from '../types';
+
 const gameStateKey = 'gameState';
 const highContrastKey = 'highContrast';
 const gameStatKey = 'gameStats';
@@ -16,15 +18,6 @@ export const saveGameStateToLocalStorage = (gameState: StoredGameState) => {
 export const loadGameStateFromLocalStorage = () => {
   const state = localStorage.getItem(gameStateKey);
   return state ? (JSON.parse(state) as StoredGameState) : null;
-};
-
-export type GameStats = {
-  winDistribution: number[];
-  gamesFailed: number;
-  currentStreak: number;
-  bestStreak: number;
-  totalGames: number;
-  successRate: number;
 };
 
 export const saveStatsToLocalStorage = (gameStats: GameStats) => {
@@ -54,8 +47,8 @@ export const getInitialDarkMode = () => {
   return localStorage.getItem(darkModeKey)
     ? localStorage.getItem(darkModeKey) === 'dark'
     : prefersDarkMode
-    ? true
-    : false;
+      ? true
+      : false;
 };
 
 export const setStoredDarkMode = (isDarkMode: boolean) => {

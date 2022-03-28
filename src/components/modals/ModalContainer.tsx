@@ -1,5 +1,7 @@
 import {useGlobalContext, useSetModals} from '../../context/GlobalContext';
 import {InfoModal} from './InfoModal';
+import {SettingsModal} from './SettingsModal';
+import {StatsModal} from './StatsModal';
 
 export const ModalContainer: React.FC = () => {
   const {
@@ -9,8 +11,8 @@ export const ModalContainer: React.FC = () => {
   return (
     <>
       <InfoModal isOpen={isInfoModalOpen} close={toggleInfoModal} />
-      <StatsModal isOpen={isStatsModalOpen} handleClose={toggleStatsModal} />
-      <SettingsModal isOpen={isSettingsModalOpen} handleClose={toggleSettingsModal} />
+      <StatsModal isOpen={isStatsModalOpen} close={toggleStatsModal} />
+      <SettingsModal isOpen={isSettingsModalOpen} close={toggleSettingsModal} />
     </>
   );
 };

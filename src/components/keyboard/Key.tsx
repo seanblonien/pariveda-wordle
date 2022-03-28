@@ -1,8 +1,8 @@
-import {ReactNode} from 'react';
 import classnames from 'classnames';
-import {CharStatus} from '../../lib/statuses';
+import {ReactNode} from 'react';
 import {MAX_WORD_LENGTH, REVEAL_TIME_MS} from '../../constants/settings';
 import {getInitialHighContrast} from '../../lib/localStorage';
+import {CharStatus} from '../../lib/statuses';
 
 type Props = {
   children?: ReactNode;
@@ -13,7 +13,7 @@ type Props = {
   isRevealing?: boolean;
 };
 
-export const Key = ({children, status, width = 40, value, onClick, isRevealing}: Props) => {
+export function Key({children, status, width = 40, value, onClick, isRevealing}: Props) {
   const keyDelayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH;
   const isHighContrast = getInitialHighContrast();
 
@@ -23,10 +23,14 @@ export const Key = ({children, status, width = 40, value, onClick, isRevealing}:
       'transition ease-in-out': isRevealing,
       'bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 active:bg-slate-400': !status,
       'bg-slate-400 dark:bg-slate-800 text-white': status === 'absent',
-      'bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white': status === 'correct' && isHighContrast,
-      'bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-white': status === 'present' && isHighContrast,
-      'bg-green-500 hover:bg-green-600 active:bg-green-700 text-white': status === 'correct' && !isHighContrast,
-      'bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 text-white': status === 'present' && !isHighContrast,
+      'bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white':
+        status === 'correct' && isHighContrast,
+      'bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-white':
+        status === 'present' && isHighContrast,
+      'bg-green-500 hover:bg-green-600 active:bg-green-700 text-white':
+        status === 'correct' && !isHighContrast,
+      'bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 text-white':
+        status === 'present' && !isHighContrast,
     },
   );
 
@@ -46,4 +50,4 @@ export const Key = ({children, status, width = 40, value, onClick, isRevealing}:
       {children || value}
     </button>
   );
-};
+}

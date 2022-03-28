@@ -10,6 +10,8 @@ import {
   setStoredHardMode,
   setStoredIsHighContrastMode,
 } from '../lib/localStorage';
+import {addStatsForCompletedGame, loadStats} from '../lib/stats';
+import {GameStats} from '../types';
 import {useAlert} from './AlertContext';
 
 type GlobalContextType = {
@@ -23,6 +25,10 @@ type GlobalContextType = {
   game: {
     currentRowClass: 'jiggle' | '';
     guesses: string[];
+    stats: GameStats;
+    isGameWon: boolean;
+    isGameLost: boolean;
+    isRevealing: boolean;
   };
   modals: {
     isInfoModalOpen: boolean;
@@ -42,6 +48,10 @@ const initialState: GlobalContextType = {
   game: {
     currentRowClass: '',
     guesses: [],
+    stats: loadStats(),
+    isGameWon: false,
+    isGameLost: false,
+    isRevealing: false,
   },
   modals: {
     isInfoModalOpen: false,
@@ -50,15 +60,17 @@ const initialState: GlobalContextType = {
   },
 };
 
-const useGlobalState = () => {
-  return useState(initialState);
-};
+const useGlobalState = () => useState(initialState);
 const {Provider, useUpdate, useTrackedState} = createContainer(useGlobalState);
 
 const useModalsUpdate = createUseTrackedUpdateByKey(useUpdate, 'modals');
 const useThemingUpdate = createUseTrackedUpdateByKey(useUpdate, 'theming');
 const useGameUpdate = createUseTrackedUpdateByKey(useUpdate, 'game');
 const useCurrentRowClassUpdate = createUseTrackedUpdateByKey(useGameUpdate, 'currentRowClass');
+
+export const useSetIsGameWon = createUseTrackedUpdateByKey(useGameUpdate, 'isGameWon');
+export const useSetIsGameLost = createUseTrackedUpdateByKey(useGameUpdate, 'isGameLost');
+export const useSetIsRevealing = createUseTrackedUpdateByKey(useGameUpdate, 'isRevealing');
 
 export const useSetDarkMode = () => {
   const update = useThemingUpdate();
@@ -95,10 +107,9 @@ export const useSetHardMode = () => {
         if (prev.game.guesses.length > 0 || getStoredHardMode()) {
           setStoredHardMode(value);
           return {...prev, settings: {...prev.settings, isHardMode: value}};
-        } else {
-          showError(HARD_MODE_ALERT_MESSAGE);
-          return prev;
         }
+        showError(HARD_MODE_ALERT_MESSAGE);
+        return prev;
       });
     },
     [update, showError],
@@ -118,7 +129,7 @@ export const useToggleCurrentRowClassJiggle = () => {
   const clearCurrentRowClass = useClearCurrentRowClass();
   return useCallback(
     (msg: string) => {
-      update(prev => {
+      update(() => {
         showError(msg, {
           onClose: clearCurrentRowClass,
         });
@@ -142,6 +153,16 @@ export const useSetModals = () => {
       update(prev => ({...prev, isSettingsModalOpen: !prev.isSettingsModalOpen}));
     }, [update]),
   };
+};
+
+export const useAddStatsCompleteGame = () => {
+  const update = useGameUpdate();
+  return useCallback(
+    (numOfGuesses: number) => {
+      update(prev => ({...prev, stats: addStatsForCompletedGame(prev.stats, numOfGuesses)}));
+    },
+    [update],
+  );
 };
 
 export {Provider as GlobalContextProvider, useTrackedState as useGlobalContext};
