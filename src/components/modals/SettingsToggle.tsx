@@ -3,7 +3,7 @@ import classnames from 'classnames';
 export type SettingsToggleProps = {
   settingName: string;
   flag: boolean;
-  handleFlag: (value: boolean) => void;
+  handleFlag: () => void;
   description?: string;
 };
 
@@ -34,7 +34,7 @@ export const SettingsToggle: React.FC<SettingsToggleProps> = ({
           <p className='text-xs mt-1 text-gray-500 dark:text-gray-300'>{description}</p>
         )}
       </div>
-      <div className={toggleHolder} onClick={() => handleFlag(!flag)}>
+      <div className={toggleHolder} onClick={handleFlag} tabIndex={0} role='button'>
         <div className={toggleButton} />
       </div>
     </div>

@@ -2,14 +2,13 @@ import {Transition} from '@headlessui/react';
 import classNames from 'classnames';
 import {Fragment} from 'react';
 
-type Props = {
+export type AlertProps = {
   isOpen: boolean;
   message: string;
   variant?: 'success' | 'error';
-  topMost?: boolean;
 };
 
-export function Alert({isOpen, message, variant = 'error', topMost = false}: Props) {
+export const Alert: React.FC<AlertProps> = ({isOpen, message, variant = 'error'}) => {
   const classes = classNames(
     'fixed z-20 top-14 left-1/2 transform -translate-x-1/2 max-w-sm shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden',
     {
@@ -36,4 +35,4 @@ export function Alert({isOpen, message, variant = 'error', topMost = false}: Pro
       </div>
     </Transition>
   );
-}
+};

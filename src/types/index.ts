@@ -23,3 +23,12 @@ export type GameStats = {
   totalGames: number;
   successRate: number;
 };
+
+export type AlertStatus = 'success' | 'error' | undefined;
+
+export type AlertOptions = {
+  persist?: boolean;
+  delayMs?: number;
+  durationMs?: number;
+  onClose?: () => void;
+};

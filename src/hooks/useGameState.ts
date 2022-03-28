@@ -1,17 +1,17 @@
 import {useCallback, useEffect} from 'react';
 import {GAME_LOST_INFO_DELAY, MAX_WORD_LENGTH, REVEAL_TIME_MS} from '../constants/settings';
 import {WIN_MESSAGES} from '../constants/strings';
-import {useAlert} from '../context/AlertContext';
 import {
   useGlobalContext,
   useSetIsGameWon,
   useSetIsGameLost,
   useSetIsRevealing,
   useSetModals,
+  useShowSuccess,
 } from '../context/GlobalContext';
 
 export const useGameState = () => {
-  const {showSuccess} = useAlert();
+  const showSuccess = useShowSuccess();
   const {
     game: {isGameLost, isGameWon, isRevealing},
   } = useGlobalContext();

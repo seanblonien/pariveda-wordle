@@ -1,12 +1,12 @@
-import {GameStats} from '../../lib/localStorage';
+import {useGlobalContext} from '../../context/GlobalContext';
 import {Progress} from './Progress';
 
-type Props = {
-  gameStats: GameStats;
-};
-
-export function Histogram({gameStats}: Props) {
-  const {winDistribution} = gameStats;
+export const Histogram = () => {
+  const {
+    game: {
+      stats: {winDistribution},
+    },
+  } = useGlobalContext();
   const maxValue = Math.max(...winDistribution);
 
   return (
@@ -16,4 +16,4 @@ export function Histogram({gameStats}: Props) {
       ))}
     </div>
   );
-}
+};

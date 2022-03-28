@@ -4,7 +4,7 @@ import {MAX_WORD_LENGTH, REVEAL_TIME_MS} from '../../constants/settings';
 import {getInitialHighContrast} from '../../lib/localStorage';
 import {CharStatus} from '../../lib/statuses';
 
-type Props = {
+export type KeyProps = {
   children?: ReactNode;
   value: string;
   width?: number;
@@ -13,7 +13,14 @@ type Props = {
   isRevealing?: boolean;
 };
 
-export function Key({children, status, width = 40, value, onClick, isRevealing}: Props) {
+export const Key: React.FC<KeyProps> = ({
+  children,
+  status,
+  width = 40,
+  value,
+  onClick,
+  isRevealing,
+}) => {
   const keyDelayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH;
   const isHighContrast = getInitialHighContrast();
 
@@ -46,8 +53,8 @@ export function Key({children, status, width = 40, value, onClick, isRevealing}:
   };
 
   return (
-    <button style={styles} className={classes} onClick={handleClick}>
+    <button style={styles} className={classes} onClick={handleClick} type='button'>
       {children || value}
     </button>
   );
-}
+};

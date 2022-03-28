@@ -1,7 +1,3 @@
-/* eslint-disable max-len */
-
-const {sync} = require('glob');
-
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -66,7 +62,7 @@ module.exports = {
   reportUnusedDisableDirectives: true,
   rules: {
     // other
-    'max-len': ['warn', {code: 100, comments: 120}],
+    // 'max-len': ['warn', {code: 100, comments: 120}],
     'max-lines-per-function': ['error', 100],
     'require-await': 'off',
     'object-property-newline': ['error', {allowAllPropertiesOnSameLine: true}],
@@ -146,7 +142,9 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/jsx-curly-brace-presence': 'warn',
     '@typescript-eslint/no-shadow': 'error',
-    'react/function-component-definition': ['error', { "namedComponents": "arrow-function" }],
+    'react/function-component-definition': ['error', {namedComponents: 'arrow-function'}],
+    'react/no-array-index-key': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
     'react/jsx-props-no-spreading': [
       'error',
       {html: 'enforce', custom: 'ignore', explicitSpread: 'ignore'},
@@ -178,19 +176,6 @@ module.exports = {
     ],
     'import/prefer-default-export': 'off',
     'import/no-unresolved': ['warn', {ignore: ['prism-react-renderer']}],
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: [
-          '**/test/**',
-          '**/*.test.js',
-          '**/*.spec.js',
-          '**/*.config.js',
-          'prism-react-renderer/*',
-        ],
-        packageDir: ['.', ...sync(`./packages/*`)],
-      },
-    ],
     // unused-import
     'unused-imports/no-unused-imports': 'warn',
     'unused-imports/no-unused-vars': [

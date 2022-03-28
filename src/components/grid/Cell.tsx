@@ -3,7 +3,7 @@ import {REVEAL_TIME_MS} from '../../constants/settings';
 import {getInitialHighContrast} from '../../lib/localStorage';
 import {CharStatus} from '../../lib/statuses';
 
-type Props = {
+export type CellProps = {
   value?: string;
   status?: CharStatus;
   isRevealing?: boolean;
@@ -11,7 +11,13 @@ type Props = {
   position?: number;
 };
 
-export function Cell({value, status, isRevealing, isCompleted, position = 0}: Props) {
+export const Cell: React.FC<CellProps> = ({
+  value,
+  status,
+  isRevealing,
+  isCompleted,
+  position = 0,
+}) => {
   const isFilled = value && !isCompleted;
   const shouldReveal = isRevealing && isCompleted;
   const animationDelay = `${position * REVEAL_TIME_MS}ms`;
@@ -44,4 +50,4 @@ export function Cell({value, status, isRevealing, isCompleted, position = 0}: Pr
       </div>
     </div>
   );
-}
+};

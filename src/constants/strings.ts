@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 export const GAME_TITLE = process.env.REACT_APP_GAME_NAME!;
 
 export const WIN_MESSAGES = ['Great Job!', 'Awesome', 'Well done!'];

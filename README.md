@@ -1,4 +1,6 @@
-# React Wordle
+# Pariveda Wordle
+
+***Sourced from React Wordle repo [here](https://github.com/cwackerfuss/react-wordle)***
 
 This is a clone project of the popular word guessing game we all know and love. Made using React, Typescript, and Tailwind.
 
@@ -6,7 +8,7 @@ This is a clone project of the popular word guessing game we all know and love. 
 
 ## Build and run
 
-### To Run Locally:
+### To Run Locally
 
 Clone the repository and perform the following command line actions:
 
@@ -16,7 +18,7 @@ $> npm install
 $> npm run start
 ```
 
-### To build/run docker container:
+### To build/run docker container
 
 #### Development
 

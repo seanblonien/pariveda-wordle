@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import {StrictMode} from 'react';
+import {render} from 'react-dom';
 import './index.css';
 import {App} from './App';
-import {AlertProvider} from './context/AlertContext';
+import {GlobalContextProvider} from './context/GlobalContext';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <AlertProvider>
+render(
+  <StrictMode>
+    <GlobalContextProvider>
       <App />
-    </AlertProvider>
-  </React.StrictMode>,
+    </GlobalContextProvider>
+  </StrictMode>,
   document.getElementById('root'),
 );
 

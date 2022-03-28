@@ -3,14 +3,19 @@ import {CompletedRow} from './CompletedRow';
 import {CurrentRow} from './CurrentRow';
 import {EmptyRow} from './EmptyRow';
 
-type Props = {
+export type GridProps = {
   guesses: string[];
   currentGuess: string;
   isRevealing?: boolean;
   currentRowClassName: string;
 };
 
-export function Grid({guesses, currentGuess, isRevealing, currentRowClassName}: Props) {
+export const Grid: React.FC<GridProps> = ({
+  guesses,
+  currentGuess,
+  isRevealing,
+  currentRowClassName,
+}) => {
   const empties =
     guesses.length < MAX_CHALLENGES - 1
       ? Array.from(Array(MAX_CHALLENGES - 1 - guesses.length))
@@ -29,4 +34,4 @@ export function Grid({guesses, currentGuess, isRevealing, currentRowClassName}: 
       ))}
     </>
   );
-}
+};

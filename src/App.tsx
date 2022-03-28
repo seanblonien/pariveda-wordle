@@ -1,26 +1,25 @@
+import {AlertContainer} from './components/alerts/AlertContainer';
 import {Grid} from './components/grid/Grid';
 import {Keyboard} from './components/keyboard/Keyboard';
 import {ModalContainer} from './components/modals/ModalContainer';
 import {Navbar} from './components/navbar/Navbar';
 import {MAX_WORD_LENGTH, MAX_CHALLENGES, REVEAL_TIME_MS} from './constants/settings';
 import {NOT_ENOUGH_LETTERS_MESSAGE, WORD_NOT_FOUND_MESSAGE, CORRECT_WORD_MESSAGE} from './constants/strings';
-import {useAlert} from './context/AlertContext';
+import {useAddStatsCompleteGame, useShowError} from './context/GlobalContext';
+import {useDarkmodeEffect} from './hooks/useDarkmodeEffect';
 import {useDifficulty} from './hooks/useDifficulty';
 import {useGameState} from './hooks/useGameState';
 import {useGuesses} from './hooks/useGuesses';
 import {isWordInWordList, solution, findFirstUnusedReveal, unicodeLength} from './lib/words';
 import './App.css';
-import {AlertContainer} from './components/alerts/AlertContainer';
-import {useModal} from './hooks/useModal';
-import {useStats} from './hooks/useStats';
 
 export const App: React.FC = () => {
-  const {showError} = useAlert();
-  const {setIsInfoModalOpen, setIsSettingsModalOpen, setIsStatsModalOpen} = useModal();
+  useDarkmodeEffect();
+  const showError = useShowError();
   const {isGameWon, setIsGameWon, isGameLost, setIsGameLost, isRevealing, toggleRevealing} = useGameState();
   const {guesses, addGuess, currentGuess, onChar, onDelete} = useGuesses(isGameWon, setIsGameWon, setIsGameLost);
-  const {statsCompleteGame} = useStats();
-  const {isHardMode, currentRowClass, doJiggle} = useDifficulty(guesses.length === 0);
+  const statsCompleteGame = useAddStatsCompleteGame();
+  const {isHardMode, currentRowClass, doJiggle} = useDifficulty();
 
   const isGuessValidLength = unicodeLength(currentGuess) === MAX_WORD_LENGTH;
 
@@ -49,9 +48,10 @@ export const App: React.FC = () => {
     toggleRevealing();
 
     const isWinningWord = solution === currentGuess;
-    const hasGuessedMaxChallenges = guesses.length === MAX_CHALLENGES - 1;
+    const isAtMaxGuesses = guesses.length === MAX_CHALLENGES;
+    const isOnLastGuess = guesses.length === MAX_CHALLENGES - 1;
 
-    if (isGuessValidLength && !hasGuessedMaxChallenges && !isGameWon) {
+    if (isGuessValidLength && !isAtMaxGuesses && !isGameWon) {
       addGuess();
 
       if (isWinningWord) {
@@ -60,7 +60,7 @@ export const App: React.FC = () => {
         return;
       }
 
-      if (hasGuessedMaxChallenges) {
+      if (isOnLastGuess) {
         statsCompleteGame(guesses.length + 1);
         setIsGameLost(true);
         showError(CORRECT_WORD_MESSAGE(solution), {

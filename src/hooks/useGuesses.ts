@@ -2,7 +2,7 @@ import GraphemeSplitter from 'grapheme-splitter';
 import {useCallback, useEffect, useState} from 'react';
 import {MAX_CHALLENGES, MAX_WORD_LENGTH} from '../constants/settings';
 import {CORRECT_WORD_MESSAGE} from '../constants/strings';
-import {useAlert} from '../context/AlertContext';
+import {useShowError} from '../context/GlobalContext';
 import {loadGameStateFromLocalStorage, saveGameStateToLocalStorage} from '../lib/localStorage';
 import {solution, unicodeLength} from '../lib/words';
 
@@ -11,7 +11,7 @@ export const useGuesses = (
   setIsGameWon: (val: boolean) => void,
   setIsGameLost: (val: boolean) => void,
 ) => {
-  const {showError} = useAlert();
+  const showError = useShowError();
   const [currentGuess, setCurrentGuess] = useState('');
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage();

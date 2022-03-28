@@ -1,15 +1,15 @@
 import {
   useGlobalContext,
-  useSetHardMode,
+  useToggleHardMode,
   useToggleCurrentRowClassJiggle,
 } from '../context/GlobalContext';
 
-export const useDifficulty = (hasGuesses: boolean) => {
+export const useDifficulty = () => {
   const {
     game: {currentRowClass},
     settings: {isHardMode},
   } = useGlobalContext();
-  const handleHardMode = useSetHardMode();
+  const handleHardMode = useToggleHardMode();
   const doJiggle = useToggleCurrentRowClassJiggle();
 
   return {isHardMode, currentRowClass, handleHardMode, doJiggle};

@@ -1,8 +1,10 @@
-import {useAlert} from '../../context/AlertContext';
+import {useGlobalContext} from '../../context/GlobalContext';
 import {Alert} from './Alert';
 
-export function AlertContainer() {
-  const {message, status, isVisible} = useAlert();
+export const AlertContainer = () => {
+  const {
+    alert: {message, status, isVisible},
+  } = useGlobalContext();
 
   return <Alert isOpen={isVisible} message={message || ''} variant={status} />;
-}
+};

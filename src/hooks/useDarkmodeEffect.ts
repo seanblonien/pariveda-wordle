@@ -1,12 +1,10 @@
 import {useEffect} from 'react';
-import {useGlobalContext, useSetDarkMode, useSetHighContrastMode} from '../context/GlobalContext';
+import {useGlobalContext} from '../context/GlobalContext';
 
-export const useDarkmode = () => {
+export const useDarkmodeEffect = () => {
   const {
     theming: {isDarkMode, isHighContrastMode},
   } = useGlobalContext();
-  const setHighContrastMode = useSetHighContrastMode();
-  const setIsDarkMode = useSetDarkMode();
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -20,9 +18,4 @@ export const useDarkmode = () => {
       document.documentElement.classList.remove('high-contrast');
     }
   }, [isDarkMode, isHighContrastMode]);
-
-  const handleDarkMode = setIsDarkMode;
-  const handleHighContrastMode = setHighContrastMode;
-
-  return {isDarkMode, isHighContrastMode, handleDarkMode, handleHighContrastMode};
 };

@@ -1,5 +1,6 @@
 import {useCallback, useState} from 'react';
 import {createContainer} from 'react-tracked';
+import {ALERT_TIME_MS} from '../constants/settings';
 import {HARD_MODE_ALERT_MESSAGE} from '../constants/strings';
 import {createUseTrackedUpdateByKey} from '../lib/helpers';
 import {
@@ -11,8 +12,7 @@ import {
   setStoredIsHighContrastMode,
 } from '../lib/localStorage';
 import {addStatsForCompletedGame, loadStats} from '../lib/stats';
-import {GameStats} from '../types';
-import {useAlert} from './AlertContext';
+import {AlertOptions, AlertStatus, GameStats} from '../types';
 
 type GlobalContextType = {
   theming: {
@@ -34,6 +34,11 @@ type GlobalContextType = {
     isInfoModalOpen: boolean;
     isStatsModalOpen: boolean;
     isSettingsModalOpen: boolean;
+  };
+  alert: {
+    status: AlertStatus;
+    message: string | null;
+    isVisible: boolean;
   };
 };
 
@@ -58,6 +63,11 @@ const initialState: GlobalContextType = {
     isStatsModalOpen: false,
     isSettingsModalOpen: false,
   },
+  alert: {
+    status: 'success',
+    message: null,
+    isVisible: false,
+  },
 };
 
 const useGlobalState = () => useState(initialState);
@@ -67,53 +77,91 @@ const useModalsUpdate = createUseTrackedUpdateByKey(useUpdate, 'modals');
 const useThemingUpdate = createUseTrackedUpdateByKey(useUpdate, 'theming');
 const useGameUpdate = createUseTrackedUpdateByKey(useUpdate, 'game');
 const useCurrentRowClassUpdate = createUseTrackedUpdateByKey(useGameUpdate, 'currentRowClass');
+const useAlertUpdate = createUseTrackedUpdateByKey(useUpdate, 'alert');
 
 export const useSetIsGameWon = createUseTrackedUpdateByKey(useGameUpdate, 'isGameWon');
 export const useSetIsGameLost = createUseTrackedUpdateByKey(useGameUpdate, 'isGameLost');
 export const useSetIsRevealing = createUseTrackedUpdateByKey(useGameUpdate, 'isRevealing');
 
-export const useSetDarkMode = () => {
-  const update = useThemingUpdate();
+const useShow = () => {
+  const update = useAlertUpdate();
   return useCallback(
-    (value: boolean) => {
-      update(prev => {
-        setStoredDarkMode(value);
-        return {...prev, isDarkMode: value};
-      });
-    },
-    [update],
-  );
-};
+    (showStatus: AlertStatus, newMessage: string, options?: AlertOptions) => {
+      const {delayMs = 0, persist, onClose, durationMs = ALERT_TIME_MS} = options || {};
 
-export const useSetHighContrastMode = () => {
-  const update = useThemingUpdate();
-  return useCallback(
-    (value: boolean) => {
-      update(prev => {
-        setStoredIsHighContrastMode(value);
-        return {...prev, isHighContrastMode: value};
-      });
-    },
-    [update],
-  );
-};
+      setTimeout(() => {
+        update(prev => ({...prev, status: showStatus, message: newMessage, isVisible: true}));
 
-export const useSetHardMode = () => {
-  const update = useUpdate();
-  const {showError} = useAlert();
-  return useCallback(
-    (value: boolean) => {
-      update(prev => {
-        if (prev.game.guesses.length > 0 || getStoredHardMode()) {
-          setStoredHardMode(value);
-          return {...prev, settings: {...prev.settings, isHardMode: value}};
+        if (!persist) {
+          setTimeout(() => {
+            update(prev => ({...prev, isVisible: false}));
+            if (onClose) {
+              onClose();
+            }
+          }, durationMs);
         }
-        showError(HARD_MODE_ALERT_MESSAGE);
-        return prev;
-      });
+      }, delayMs);
     },
-    [update, showError],
+    [update],
   );
+};
+
+export const useShowError = () => {
+  const show = useShow();
+  return useCallback(
+    (newMessage: string, options?: AlertOptions) => {
+      show('error', newMessage, options);
+    },
+    [show],
+  );
+};
+
+export const useShowSuccess = () => {
+  const show = useShow();
+  return useCallback(
+    (newMessage: string, options?: AlertOptions) => {
+      show('success', newMessage, options);
+    },
+    [show],
+  );
+};
+
+export const useToggleDarkMode = () => {
+  const update = useThemingUpdate();
+  return useCallback(() => {
+    update(prev => {
+      const isDarkMode = !prev.isDarkMode;
+      setStoredDarkMode(isDarkMode);
+      return {...prev, isDarkMode};
+    });
+  }, [update]);
+};
+
+export const useToggleHighContrastMode = () => {
+  const update = useThemingUpdate();
+  return useCallback(() => {
+    update(prev => {
+      const isHighContrastMode = !prev.isHighContrastMode;
+      setStoredIsHighContrastMode(isHighContrastMode);
+      return {...prev, isHighContrastMode};
+    });
+  }, [update]);
+};
+
+export const useToggleHardMode = () => {
+  const update = useUpdate();
+  const showError = useShowError();
+  return useCallback(() => {
+    update(prev => {
+      if (prev.game.guesses.length === 0 || getStoredHardMode()) {
+        const isHardMode = !prev.settings.isHardMode;
+        setStoredHardMode(isHardMode);
+        return {...prev, settings: {...prev.settings, isHardMode}};
+      }
+      showError(HARD_MODE_ALERT_MESSAGE);
+      return prev;
+    });
+  }, [update, showError]);
 };
 
 export const useClearCurrentRowClass = () => {
@@ -125,7 +173,7 @@ export const useClearCurrentRowClass = () => {
 
 export const useToggleCurrentRowClassJiggle = () => {
   const update = useCurrentRowClassUpdate();
-  const {showError} = useAlert();
+  const showError = useShowError();
   const clearCurrentRowClass = useClearCurrentRowClass();
   return useCallback(
     (msg: string) => {

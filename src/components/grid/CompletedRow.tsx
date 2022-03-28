@@ -2,12 +2,12 @@ import {getGuessStatuses} from '../../lib/statuses';
 import {unicodeSplit} from '../../lib/words';
 import {Cell} from './Cell';
 
-type Props = {
+export type CompletedRowProps = {
   guess: string;
   isRevealing?: boolean;
 };
 
-export function CompletedRow({guess, isRevealing}: Props) {
+export const CompletedRow: React.FC<CompletedRowProps> = ({guess, isRevealing}) => {
   const statuses = getGuessStatuses(guess);
   const splitGuess = unicodeSplit(guess);
 
@@ -25,4 +25,4 @@ export function CompletedRow({guess, isRevealing}: Props) {
       ))}
     </div>
   );
-}
+};

@@ -2,12 +2,12 @@ import {MAX_WORD_LENGTH} from '../../constants/settings';
 import {unicodeSplit} from '../../lib/words';
 import {Cell} from './Cell';
 
-type Props = {
+export type CurrentRowProps = {
   guess: string;
   className: string;
 };
 
-export function CurrentRow({guess, className}: Props) {
+export const CurrentRow: React.FC<CurrentRowProps> = ({guess, className}) => {
   const splitGuess = unicodeSplit(guess);
   const emptyCells = Array.from(Array(MAX_WORD_LENGTH - splitGuess.length));
   const classes = `flex justify-center mb-1 ${className}`;
@@ -22,4 +22,4 @@ export function CurrentRow({guess, className}: Props) {
       ))}
     </div>
   );
-}
+};
