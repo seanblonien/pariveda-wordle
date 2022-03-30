@@ -71,18 +71,21 @@ export const localeAwareUpperCase = (text: string) => {
 
 export const getWordOfDay = () => {
   // January 1, 2022 Game Epoch
-  const epochMs = new Date('January 1, 2022 00:00:00').valueOf();
-  const now = Date.now();
-  const msInDay = 86400000;
-  const index = Math.floor((now - epochMs) / msInDay);
+  const baseTime = new Date('January 1, 2022 00:00:00').valueOf();
+  const nowTime = Date.now();
+  const millisecondsInADay = 86400000;
+  const timeElpasedInMilliseconds = nowTime - baseTime;
+  const numberOfTheDay = Math.floor(timeElpasedInMilliseconds / millisecondsInADay);
+  const wordOfTheDay = WORDS[numberOfTheDay % WORDS.length];
+  
+  const solution = localeAwareUpperCase(wordOfTheDay);
 
-  const solution = localeAwareUpperCase(WORDS[index % WORDS.length]);
-  console.log(`Solution #${index}: ${solution}`);
+  console.log(`Solution #${numberOfTheDay}: ${solution}`);
 
-  const nextday = (index + 1) * msInDay + epochMs;
+  const nextday = (numberOfTheDay + 1) * millisecondsInADay + baseTime;
   return {
     solution,
-    solutionIndex: index,
+    solutionIndex: numberOfTheDay,
     tomorrow: nextday,
   };
 };
